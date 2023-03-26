@@ -1,14 +1,15 @@
 const validarEntradaDeDados = (lancamento) => {
 
    console.log("Validando Dados");
-
-   validaCpf(lancamento.cpf)? console.log("cpf validado") : console.log("cpf errado");
-   validaValor(lancamento.valor)?console.log("valor validado") : console.log("valor errado");
-
-   return null
+   var mensagemValidacao = null;
+   validaCpf(lancamento.cpf)? console.log("cpf validado") : mensagemValidacao = "CPF não é válido";
+   validaValor(lancamento.valor)?console.log("valor validado") : mensagemValidacao = mensagemValidacao + "\nValor nâo é válodo";
+   //console.log(mensagemValidacao)
+   return mensagemValidacao;
 }
 
 const recuperarSaldosPorConta = (lancamentos) => {
+   //console.log(lancamentos);
    return []
 }
 
