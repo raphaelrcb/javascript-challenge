@@ -12,7 +12,6 @@ const recuperarSaldosPorConta = (lancamentos) => {
    const saldoPorContas = [];
 
    if(lancamentos!=null){
-//      console.log("Lançamentos Separados: ", lancamentos);
       for(i=0; i < Object.keys(lancamentos).length; i++){
          saldoConta = calculaSaldoConta(lancamentos[i].cpf, lancamentos, saldoPorContas)
          if (saldoConta != null)
@@ -22,13 +21,35 @@ const recuperarSaldosPorConta = (lancamentos) => {
       console.log("lancamentos vazios")
    }
 
-
-//   console.log("array saldoPorContas: ", saldoPorContas);
    return saldoPorContas;
 }
 
 const recuperarMaiorMenorLancamentos = (cpf, lancamentos) => {
-   return []
+
+   var maiorMenorlancamentos = [];
+   var maiorLancamento = -2001;
+   var menorLancamento = 15001;
+   var maiorIndex = -1;
+   var menorIndex = -1;
+
+   lancamentos.forEach((lancamento, index) => {
+      if (lancamento.cpf == cpf){
+         if (lancamento.valor >= maiorLancamento){
+            maiorLancamento = lancamento.valor;
+            maiorIndex = index;
+         }
+         if (lancamento.valor <= menorLancamento){
+            menorLancamento = lancamento.valor;
+            menorIndex = index;
+         }
+      } 
+      
+   });
+   maiorMenorlancamentos.push(lancamentos[maiorIndex]);
+   maiorMenorlancamentos.push(lancamentos[menorIndex]);
+   console.log(maiorMenorlancamentos);
+
+   return maiorMenorlancamentos;
 }
 
 const recuperarMaioresSaldos = (lancamentos) => {
