@@ -2,15 +2,29 @@ const validarEntradaDeDados = (lancamento) => {
 
    console.log("Validando Dados");
    var mensagemValidacao = null;
-   validaCpf(lancamento.cpf)? console.log("cpf validado") : mensagemValidacao = "CPF não é válido";
-   validaValor(lancamento.valor)?console.log("valor validado") : mensagemValidacao = mensagemValidacao + "\nValor nâo é válodo";
+   validaCpf(lancamento.cpf)? /*console.log("cpf validado")*/ null : mensagemValidacao = "CPF não é válido";
+   validaValor(lancamento.valor)? /*console.log("valor validado")*/ null : mensagemValidacao = mensagemValidacao + "\nValor nâo é válodo";
    //console.log(mensagemValidacao)
    return mensagemValidacao;
 }
 
 const recuperarSaldosPorConta = (lancamentos) => {
-   //console.log(lancamentos);
-   return []
+   const saldoPorContas = [];
+
+   if(lancamentos!=null){
+//      console.log("Lançamentos Separados: ", lancamentos);
+      for(i=0; i < Object.keys(lancamentos).length; i++){
+         saldoConta = calculaSaldoConta(lancamentos[i].cpf, lancamentos, saldoPorContas)
+         if (saldoConta != null)
+            saldoPorContas.push(saldoConta);
+      }
+   } else {
+      console.log("lancamentos vazios")
+   }
+
+
+//   console.log("array saldoPorContas: ", saldoPorContas);
+   return saldoPorContas;
 }
 
 const recuperarMaiorMenorLancamentos = (cpf, lancamentos) => {
@@ -26,9 +40,9 @@ const recuperarMaioresMedias = (lancamentos) => {
 }
 
 function validaCpf(cpf){
- //  console.log(cpf);
+
    const regex = new RegExp('([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})');
- //  console.log(regex.test(cpf));
+
    if (regex.test(cpf)) {
       cpf = cpf.replace(/[^a-zA-Z0-9 ]/g, '');
    } else {
@@ -38,7 +52,6 @@ function validaCpf(cpf){
 }
 
 function VerificaDigitoCpf(cpf) {
-   //console.log("valida digito no cpf: ", cpf);
 
    var sum = 0;
    var remainder;
@@ -72,7 +85,7 @@ function VerificaDigitoCpf(cpf) {
 }
 
 function validaValor(valor) {
-   console.log("Valor: ", valor)
+   //console.log("Valor: ", valor)
    if (valor){
       if (valor > 15000 || valor < -2000){
          return false;
@@ -82,3 +95,22 @@ function validaValor(valor) {
    }
    return false;
 } 
+
+function calculaSaldoConta(cpfLancamentoAtual, lancamentos, saldoPorContas) {
+
+   var saldoConta = {
+      cpf: cpfLancamentoAtual,
+      valor: 0
+   };
+   
+   isPresent = saldoPorContas.findIndex(conta => conta.cpf === cpfLancamentoAtual);
+   if (isPresent == -1){
+      lancamentos.forEach(lancamento => {
+         if (cpfLancamentoAtual == lancamento.cpf){
+            saldoConta.valor = saldoConta.valor + lancamento.valor;
+         }
+      });
+      return saldoConta;
+   } 
+   return null;
+}
