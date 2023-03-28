@@ -57,7 +57,15 @@ const recuperarMaioresSaldos = (lancamentos) => {
 }
 
 const recuperarMaioresMedias = (lancamentos) => {
-    return []
+
+   var medias = [...lancamentos
+   
+      .reduce( (map, {cpf, valor}) => map.set(cpf, [...(map.get(cpf) || []), valor]), new Map)   
+   
+   ] .map(   ([cpf, valor]) => ({ cpf, valor: valor.reduce((sum, val) => sum + val, 0) / valor.length })   );
+   medias = medias.sort((menor, maior) => { return maior.valor - menor.valor});
+   console.log(medias);
+    return medias.slice(0,3);
 }
 
 function validaCpf(cpf){
