@@ -53,7 +53,14 @@ const recuperarMaiorMenorLancamentos = (cpf, lancamentos) => {
 }
 
 const recuperarMaioresSaldos = (lancamentos) => {
-   return []
+
+   totalSaldos = recuperarSaldosPorConta(lancamentos);
+   
+   totalSaldos = totalSaldos.sort((menor, maior) => { return maior.valor - menor.valor});
+
+   //console.log("ORDENADO", totalSaldos);
+
+   return totalSaldos.slice(0,3);
 }
 
 const recuperarMaioresMedias = (lancamentos) => {
