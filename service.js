@@ -45,9 +45,9 @@ const recuperarMaiorMenorLancamentos = (cpf, lancamentos) => {
       } 
       
    });
-   maiorMenorlancamentos.push(lancamentos[maiorIndex]);
    maiorMenorlancamentos.push(lancamentos[menorIndex]);
-   console.log(maiorMenorlancamentos);
+   maiorMenorlancamentos.push(lancamentos[maiorIndex]);
+   //console.log(maiorMenorlancamentos);
 
    return maiorMenorlancamentos;
 }
