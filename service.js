@@ -9,17 +9,10 @@ const validarEntradaDeDados = (lancamento) => {
 }
 
 const recuperarSaldosPorConta = (lancamentos) => {
-   const saldoPorContas = [];
 
-   if(lancamentos!=null){
-      for(i=0; i < Object.keys(lancamentos).length; i++){
-         saldoConta = calculaSaldoConta(lancamentos[i].cpf, lancamentos, saldoPorContas)
-         if (saldoConta != null)
-            saldoPorContas.push(saldoConta);
-      }
-   } else {
-      console.log("lancamentos vazios")
-   }
+   var saldoPorContas = [...lancamentos
+      .reduce( (map, {cpf, valor}) => map.set(cpf, [...(map.get(cpf) || []), valor]), new Map)] 
+      .map(   ([cpf, valor]) => ({ cpf, valor: valor.reduce((sum, val) => sum + val, 0) })   );//   };
 
    return saldoPorContas;
 }
@@ -131,22 +124,3 @@ function validaValor(valor) {
    }
    return false;
 } 
-
-function calculaSaldoConta(cpfLancamentoAtual, lancamentos, saldoPorContas) {
-
-   var saldoConta = {
-      cpf: cpfLancamentoAtual,
-      valor: 0
-   };
-   
-   isPresent = saldoPorContas.findIndex(conta => conta.cpf === cpfLancamentoAtual);
-   if (isPresent == -1){
-      lancamentos.forEach(lancamento => {
-         if (cpfLancamentoAtual == lancamento.cpf){
-            saldoConta.valor = saldoConta.valor + lancamento.valor;
-         }
-      });
-      return saldoConta;
-   } 
-   return null;
-}
